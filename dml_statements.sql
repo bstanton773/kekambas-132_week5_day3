@@ -116,5 +116,122 @@ FROM post;
 --	123 -- blog_user WITH ID 123 does not exist! will throw an error
 --);
 
+INSERT INTO blog_user(
+	username,
+	password_hash,
+	email_address,
+	first_name,
+	last_name 
+) VALUES (
+	'mickey',
+	'dsfkdshfkdsfjk',
+	'mickey.mouse@disney.com',
+	'Mickey',
+	'Mouse'
+),(
+	'minnie',
+	'dklsfhjsdklfhkdl;fjds',
+	'minnie.mouse@disney.com',
+	'Minnie',
+	'Mouse'
+);
+
+SELECT *
+FROM blog_user;
+
+-- To update existing data in a table
+-- Syntax: UPDATE table_name SET col_1 = val_1, col_2 = val_2, etc. WHERE condition
+
+UPDATE blog_user
+SET middle_name = 'Danger'
+WHERE user_id = 1;
+
+SELECT *
+FROM blog_user;
 
 
+UPDATE blog_user
+SET middle_name = 'The'
+WHERE email_address LIKE '%disney.com';
+
+
+SELECT *
+FROM category;
+
+-- Alter the category table to add a color column
+ALTER TABLE category
+ADD COLUMN color VARCHAR(7);
+
+
+-- An UPDATE/SET without a WHERE, all of the rows are updated
+UPDATE category
+SET color = '#db6e14';
+
+SELECT *
+FROM category;
+
+-- Set multiple columns in one command
+SELECT *
+FROM post;
+
+UPDATE post
+SET title = 'Updated Title', body = 'This is the updated body'
+WHERE post_id = 5;
+
+SELECT *
+FROM post
+ORDER BY post_id;
+
+
+-- DELETE
+
+-- Syntax: DELETE FROM table_name WHERE condition
+-- WHERE is not required but HIGHLY RECOMMENDED *without WHERE every row will be deleted
+
+SELECT *
+FROM blog_user
+ORDER BY user_id;
+
+DELETE FROM blog_user
+WHERE user_id >= 6;
+
+SELECT *
+FROM blog_user;
+
+-- A DELETE FROM without a WHERE will delete all rows
+SELECT *
+FROM category;
+
+DELETE FROM category;
+
+
+SELECT *
+FROM post;
+
+DELETE FROM blog_user
+WHERE user_id = 5;
+
+
+-- To make it so that when we delete a row, it will delete any rows in related tables that reference that row
+-- We will add ON DELETE CASCADE to the foreign key constraint
+
+ALTER TABLE post 
+DROP CONSTRAINT post_user_id_fkey;
+
+ALTER TABLE post 
+ADD FOREIGN KEY(user_id) REFERENCES blog_user(user_id) ON DELETE CASCADE;
+
+
+SELECT *
+FROM blog_user;
+SELECT *
+FROM post;
+
+DELETE FROM blog_user
+WHERE user_id = 5;
+
+SELECT *
+FROM blog_user;
+
+SELECT *
+FROM post;
